@@ -21,6 +21,9 @@ class Colors:
             selection = random.randint(0,4)
         return self.color_list[selection]
 
+    def new_color(self):
+        return sdl.Color(random.randint(0,255),random.randint(0,255),random.randint(0,255))
+
 
 def test():
     print('ok')
@@ -42,7 +45,7 @@ class Manager:
         for item in self.render_list:
             if item.rend == None:
                 item.set_renderer(self.renderer)
-                self.renderer.color = item.color
+            self.renderer.color = item.color
             item.draw()
             if item.persist == False:
                 self.render_list.remove(item)
@@ -85,3 +88,25 @@ class Point:
     def set_pos(self, x, y):
         self.x = x
         self.y = y
+
+class Circle:
+    def __init__(self, x, y, color, persist = True):
+        self.x = x
+        self.y = y
+        self.color = color
+        self.persist = persist
+        self.rend = None
+
+    def set_renderer(self, renderer):
+        self.rend = renderer
+
+    def set_color(self, color):
+        self.color = color
+        self.rend.color = self.color
+
+    def set_pos(self, x, y):
+        self.x = x
+        self.y = y
+
+    def draw(self):
+        return None
