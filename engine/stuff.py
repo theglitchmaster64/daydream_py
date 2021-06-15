@@ -1,12 +1,16 @@
 import sdl2.ext as sdl
 from sdl2 import SDL_QUIT
 import random
+import math
 
 RED = sdl.Color(255,0,0)
 GREEN = sdl.Color(0,255,0)
 BLUE = sdl.Color(0,0,255)
 BLACK = sdl.Color(0,0,0)
 WHITE = sdl.Color(255,255,255)
+
+def dist(p1,p2):
+    return math.sqrt( (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2 )
 
 class Colors:
     def __init__(self):
@@ -89,10 +93,21 @@ class Point:
         self.x = x
         self.y = y
 
+class Rect:
+    def __init__(self,x1,y1,x2,y2,color = GREEN, persist = True):
+        self.x = x1
+        self.y = y1
+        self.w = abs(x1-x2)
+        self.h = abs(y1-y2)
+        self.color = color
+        self.persist = persist
+
+
 class Circle:
-    def __init__(self, x, y, color, persist = True):
+    def __init__(self, x, y, r, color = GREEN, persist = True):
         self.x = x
         self.y = y
+        self.r = r
         self.color = color
         self.persist = persist
         self.rend = None
@@ -109,4 +124,11 @@ class Circle:
         self.y = y
 
     def draw(self):
-        return None
+        #create point for bounding square (south-east quadrant)
+        p1 = (self.x, self.y + self.r)
+        p2 = (self.x + self.r, self.y)
+        for i in range(p1[0],p2[0]):
+            for j in range(p2[1],p1[1]):
+                if dist((i,j),(self.x,self.y)) < self.r:
+                    self.rend.draw_point([i,j])
+                    
