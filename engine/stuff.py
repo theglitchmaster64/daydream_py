@@ -123,12 +123,28 @@ class Circle:
         self.x = x
         self.y = y
 
+    def _draw_helper(self,xc,yc,h,k):
+        self.rend.draw_point([xc+h,yc+k])
+        self.rend.draw_point([xc-h,yc-k])
+        self.rend.draw_point([xc+h,yc-k])
+        self.rend.draw_point([xc-h,yc+k])
+        self.rend.draw_point([xc+k,yc+h])
+        self.rend.draw_point([xc-k,yc-h])
+        self.rend.draw_point([xc+k,yc-h])
+        self.rend.draw_point([xc-k,yc+h])
+
+
+
     def draw(self):
-        #create point for bounding square (south-east quadrant)
-        p1 = (self.x, self.y + self.r)
-        p2 = (self.x + self.r, self.y)
-        for i in range(p1[0],p2[0]):
-            for j in range(p2[1],p1[1]):
-                if dist((i,j),(self.x,self.y)) < self.r:
-                    self.rend.draw_point([i,j])
-                    
+        x0 = 0
+        r0 = self.r
+        d = 3 - 2*r0
+        self._draw_helper(self.x, self.y, x0, r0)
+        while (r0 >= x0):
+            x0 += 1
+            if (d > 0):
+                r0 -= 1
+                d = d + (4 * (x0 - r0)) + 10
+            else:
+                d = d + (4*x0) + 6
+                self._draw_helper(self.x, self.y, x0, r0)

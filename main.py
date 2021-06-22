@@ -11,7 +11,7 @@ if __name__=='__main__':
     while True:
         t1 = time.time()
         #mgr.add_gameobject(Point(random.randint(0,640),random.randint(0,480),Colors().new_color()))
-        mgr.add_gameobject(Circle(100,100,25))
+        mgr.add_gameobject(Circle(320,240,120,color=Colors().new_color(), persist=False))
         retcode = mgr.update_frame()
         elapsed = time.time() - t1
         t1 = time.time()
