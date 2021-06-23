@@ -128,6 +128,18 @@ class Circle:
         self.x = x
         self.y = y
 
+    def _draw_helper(self, pt):
+        dx = abs(self.x - pt[0])
+        dy = abs(self.y - pt[1])
+        #self.rend.draw_point([pt[0], pt[1]])
+        self.rend.draw_point([self.x + dx, self.y + dy])
+        self.rend.draw_point([self.x - dx, self.y - dy])
+        self.rend.draw_point([self.x + dx, self.y - dy])
+        self.rend.draw_point([self.x - dx, self.y + dy])
+        self.rend.draw_point([self.x + dy, self.y + dx])
+        self.rend.draw_point([self.x - dy, self.y - dx])
+        self.rend.draw_point([self.x + dy, self.y - dx])
+        self.rend.draw_point([self.x - dy, self.y + dx])
 
     def draw(self):
         startpos = (self.x, self.y - self.r)
@@ -141,8 +153,8 @@ class Circle:
             d_east = abs(self.r - dist(center,east))
             d_southEast = abs(self.r - dist(center,southEast))
             if (d_east < d_southEast):
-                self.rend.draw_point([east[0], east[1]])
+                self._draw_helper(east)
             else:
-                self.rend.draw_point([southEast[0], southEast[1]])
+                self._draw_helper(southEast)
                 y0 += 1
             x0 += 1
