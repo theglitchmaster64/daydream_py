@@ -38,8 +38,10 @@ def test():
     print('ok')
 
 class Manager:
-    def __init__(self,title, res, back_color = BLACK, fore_color = WHITE):
-        self.render_list = []
+    def __init__(self,title, res, back_color = BLACK, fore_color = WHITE, renlim = 32):
+        self.renlim = renlim
+        self.rencount = 0
+        self.render_list = [None] * self.renlim
         self.bg_color = back_color
         self.fg_color = fore_color
         self.window = sdl.Window(title,size=res)
@@ -52,6 +54,8 @@ class Manager:
     def update_frame(self):
         self.renderer.clear(self.bg_color)
         for item in self.render_list:
+            if item == None:
+                continue
             if item.rend == None:
                 item.set_renderer(self.renderer)
             self.renderer.color = item.color
@@ -65,7 +69,7 @@ class Manager:
                 return 'MGR_QUIT'
 
     def clear_queue(self):
-        self.render_list = []
+        self.render_list.clear()
 
     def set_bgcolor(color):
         self.bg_color = color
@@ -74,7 +78,10 @@ class Manager:
         self.fg_color = color
 
     def add_gameobject(self,gameobject):
-        self.render_list.append(gameobject)
+        self.render_list[self.rencount%self.renlim] = gameobject
+        self.rencount += 1
+        if (self.rencount == self.renlim):
+            print('render limit reached!')
 
 class Point:
     def __init__(self, x, y, color, persist = True):
