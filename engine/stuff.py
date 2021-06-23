@@ -64,6 +64,9 @@ class Manager:
             if e.type == SDL_QUIT:
                 return 'MGR_QUIT'
 
+    def clear_queue(self):
+        self.render_list = []
+
     def set_bgcolor(color):
         self.bg_color = color
 
