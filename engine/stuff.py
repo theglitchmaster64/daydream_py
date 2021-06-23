@@ -157,6 +157,10 @@ class Circle:
         center = (self.x, self.y)
         x0 = startpos[0]
         y0 = startpos[1]
+        self.rend.draw_point([center[0],center[1] - self.r])
+        self.rend.draw_point([center[0],center[1] + self.r])
+        self.rend.draw_point([center[0] + self.r ,center[1]])
+        self.rend.draw_point([center[0] - self.r ,center[1]])
         while(y0 <= stoppos[1]):
             east = (x0+1, y0)
             southEast = (x0+1, y0+1)
