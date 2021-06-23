@@ -15,6 +15,11 @@ def dist(p1,p2):
 class Colors:
     def __init__(self):
         self.color_list = [RED,GREEN,BLUE,WHITE,BLACK]
+        self.GREEN = GREEN
+        self.RED = RED
+        self.BLUE = BLUE
+        self.BLACK = BLACK
+        self.WHITE = WHITE
 
     def random(self,type='all'):
         if type == 'fg':
@@ -123,28 +128,21 @@ class Circle:
         self.x = x
         self.y = y
 
-    def _draw_helper(self,xc,yc,h,k):
-        self.rend.draw_point([xc+h,yc+k])
-        self.rend.draw_point([xc-h,yc-k])
-        self.rend.draw_point([xc+h,yc-k])
-        self.rend.draw_point([xc-h,yc+k])
-        self.rend.draw_point([xc+k,yc+h])
-        self.rend.draw_point([xc-k,yc-h])
-        self.rend.draw_point([xc+k,yc-h])
-        self.rend.draw_point([xc-k,yc+h])
-
-
 
     def draw(self):
-        x0 = 0
-        r0 = self.r
-        d = 3 - 2*r0
-        self._draw_helper(self.x, self.y, x0, r0)
-        while (r0 >= x0):
-            x0 += 1
-            if (d > 0):
-                r0 -= 1
-                d = d + (4 * (x0 - r0)) + 10
+        startpos = (self.x, self.y - self.r)
+        stoppos = (self.x + self.r, int(self.y - self.r*math.cos(math.pi/4)))
+        center = (self.x, self.y)
+        x0 = startpos[0]
+        y0 = startpos[1]
+        while(y0 <= stoppos[1]):
+            east = (x0+1, y0)
+            southEast = (x0+1, y0+1)
+            d_east = abs(self.r - dist(center,east))
+            d_southEast = abs(self.r - dist(center,southEast))
+            if (d_east < d_southEast):
+                self.rend.draw_point([east[0], east[1]])
             else:
-                d = d + (4*x0) + 6
-                self._draw_helper(self.x, self.y, x0, r0)
+                self.rend.draw_point([southEast[0], southEast[1]])
+                y0 += 1
+            x0 += 1
