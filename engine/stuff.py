@@ -2,6 +2,7 @@ import sdl2.ext as sdl
 from sdl2 import SDL_QUIT
 import random
 import math
+import time
 
 RED = sdl.Color(255,0,0)
 GREEN = sdl.Color(0,255,0)
@@ -30,8 +31,8 @@ class Colors:
             selection = random.randint(0,4)
         return self.color_list[selection]
 
-    def new_color(self):
-        return sdl.Color(random.randint(0,255),random.randint(0,255),random.randint(0,255))
+    def new_color(self,bias_low=(0,0,0),bias_up=(255,255,255)):
+        return sdl.Color(random.randint(bias_low[0],bias_up[0]),random.randint(bias_low[1],bias_up[1]),random.randint(bias_low[2],bias_up[2]))
 
 
 def test():
@@ -60,8 +61,6 @@ class Manager:
                 item.set_renderer(self.renderer)
             self.renderer.color = item.color
             item.draw()
-            if item.persist == False:
-                self.render_list.remove(item)
         self.renderer.present()
         events = sdl.get_events()
         for e in events:
@@ -84,12 +83,11 @@ class Manager:
             print('render limit reached!')
 
 class Point:
-    def __init__(self, x, y, color, persist = True):
+    def __init__(self, x, y, color):
         self.x = x
         self.y = y
         self.rend = None
         self.color = color
-        self.persist = persist
 
     def set_renderer(self,renderer):
         self.rend = renderer
@@ -109,22 +107,21 @@ class Point:
         self.y = y
 
 class Rect:
-    def __init__(self,x1,y1,x2,y2,color = GREEN, persist = True):
+    def __init__(self,x1,y1,x2,y2,color = GREEN):
         self.x = x1
         self.y = y1
         self.w = abs(x1-x2)
         self.h = abs(y1-y2)
         self.color = color
-        self.persist = persist
+
 
 
 class Circle:
-    def __init__(self, x, y, r, color = GREEN, persist = True):
+    def __init__(self, x, y, r, color = GREEN):
         self.x = x
         self.y = y
         self.r = r
         self.color = color
-        self.persist = persist
         self.rend = None
 
     def set_renderer(self, renderer):
